@@ -1,0 +1,25 @@
+%{---------------------------------------------------------------
+Override attachment tables to add a "WebDAV" column to support opening
+attachments from a webdav drive
+---------------------------------------------------------------
+}%%TMPL:INCLUDE{"attachtables"}%%{
+---------------------------------------------------------------
+Add a "WebDAV" column to attachment table headers
+---------------------------------------------------------------
+}%%TMPL:DEF{ATTACH:files:header(toprow)}%| *I* | *%MAKETEXT{"Attachment"}%* | *%MAKETEXT{"Action"}%* | *%MAKETEXT{"WebDAV"}%* | *%MAKETEXT{"Size"}%* | *%MAKETEXT{"Date"}%* | *%MAKETEXT{"Who"}%* | *%MAKETEXT{"Comment"}%* |%TMPL:END%%{
+---------------------------------------------------------------
+Add a "WebDAV" column to attachment table rows
+---------------------------------------------------------------
+}%%TMPL:DEF{ATTACH:files:row(basic)}%| %A_ICON%<span class="foswikiHidden twikiHidden">%A_EXT%</span> | <a href="%ATTACHURLPATH%/%ENCODE{%A_FILE%}%"><noautolink>%A_FILE%</noautolink></a> | <a href="%SCRIPTURLPATH{"attach"}%/%WEB%/%TOPIC%?filename=%ENCODE{"%A_FILE%"}%;revInfo=1" title="%MAKETEXT{"change, update, previous revisions, move, delete..."}%" rel="nofollow">%MAKETEXT{"manage"}%</a> |<a href="%WEBDAVFOLDERURL%/%WEB%/%TOPIC%_files/%ENCODE{%A_FILE%}%" class="webfolder" target="_top">open</a> |%A_SIZE%|<span class="foswikiNoBreak twikiNoBreak">%A_DATE%</span> |%A_USER%  |%A_COMMENT%  |%TMPL:END%
+
+%TMPL:DEF{ATTACH:files:header}%<div class="foswikiAttachments twikiAttachments">
+%TMPL:P{context="TablePluginEnabled" then="ATTACH:files:tableformat"}%
+<literal><!--[if IE]>
+<style>a.webfolder{behavior: url(#default#AnchorClick);}</style>
+<div style="float:right;">
+<a href="%WEBDAVFOLDERURL%/%WEB%/%TOPIC%_files/" folder="%WEBDAVFOLDERURL%/%WEB%/%TOPIC%_files/" class="webfolder" target="_new">
+<strong>Open Web<nop>Folder</strong></a> </div>
+<![endif]--></literal>
+%TMPL:P{"topicattachmentwisty"}%
+%TMPL:P{ATTACH:files:header(toprow)}%
+%TMPL:END%
