@@ -1,19 +1,19 @@
-data/System/WebDAVLinkPlugin.txt,0644,Documentation
-lib/Foswiki/Plugins/WebDAVLinkPlugin.pm,0644,Perl module
-lib/Foswiki/Plugins/WebDAVLinkPlugin/Config.spec,0444,Configuration parameters
-lib/Foswiki/Plugins/WebDAVLinkPlugin/JQueryPlugin.pm,0444,The JQueryPlugin
-pub/System/WebDAVLinkPlugin/jquery-1.1.3.js,0644,For TWiki compatibility only
-pub/System/WebDAVLinkPlugin/jquery.livequery-1.0.3.js,0644,For TWiki compatibility only
-pub/System/WebDAVLinkPlugin/webdavlink_src.js,0644,Javascript
-pub/System/WebDAVLinkPlugin/webdavlink.js,0644,Compressed Javascript
-pub/System/WebDAVLinkPlugin/wikiringlogo20x20.png,0644,Graphic
-pub/System/WebDAVLinkPlugin/icon.png,0644,Firefox extension
-pub/System/WebDAVLinkPlugin/firefox/webdavlink.xpi,0644,Firefox extension
-templates/attachtables.webdav.tmpl,0644,Foswiki template
-pub/System/WebDAVLinkPlugin/MacOS-Transmit-connect.png,0664,
-pub/System/WebDAVLinkPlugin/MacOS-Transmit-filelist.png,0664,
-pub/System/WebDAVLinkPlugin/MacOS-Transmit-mount.png,0664,
-pub/System/WebDAVLinkPlugin/WebDAV-custom-level.png,0664,
-pub/System/WebDAVLinkPlugin/WebDAV-security-settings.png,0664,
-pub/System/WebDAVLinkPlugin/WebDAV-trusted-sites1.png,0664,
-pub/System/WebDAVLinkPlugin/WebDAV-trusted-sites2.png,0664,
+data/System/WebDAVLinkPlugin.txt 0644 Documentation
+lib/Foswiki/Plugins/WebDAVLinkPlugin.pm 0644 Perl module
+lib/Foswiki/Plugins/WebDAVLinkPlugin/Config.spec 0444 Configuration parameters
+lib/Foswiki/Plugins/WebDAVLinkPlugin/JQueryPlugin.pm 0444 The JQueryPlugin
+pub/System/WebDAVLinkPlugin/jquery-1.1.3.js 0644 For TWiki compatibility only
+pub/System/WebDAVLinkPlugin/jquery.livequery-1.0.3.js 0644 For TWiki compatibility only
+pub/System/WebDAVLinkPlugin/webdavlink_src.js 0644 Javascript
+pub/System/WebDAVLinkPlugin/webdavlink.js 0644 Compressed Javascript
+pub/System/WebDAVLinkPlugin/wikiringlogo20x20.png 0644 Graphic
+pub/System/WebDAVLinkPlugin/icon.png 0644 Firefox extension
+pub/System/WebDAVLinkPlugin/firefox/webdavlink.xpi 0644 Firefox extension
+templates/attachtables.webdav.tmpl 0644 Foswiki template
+pub/System/WebDAVLinkPlugin/MacOS-Transmit-connect.png 0664
+pub/System/WebDAVLinkPlugin/MacOS-Transmit-filelist.png 0664
+pub/System/WebDAVLinkPlugin/MacOS-Transmit-mount.png 0664
+pub/System/WebDAVLinkPlugin/WebDAV-custom-level.png 0664
+pub/System/WebDAVLinkPlugin/WebDAV-security-settings.png 0664
+pub/System/WebDAVLinkPlugin/WebDAV-trusted-sites1.png 0664
+pub/System/WebDAVLinkPlugin/WebDAV-trusted-sites2.png 0664
