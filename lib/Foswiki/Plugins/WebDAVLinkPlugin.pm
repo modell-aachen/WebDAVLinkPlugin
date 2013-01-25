@@ -11,7 +11,7 @@ use Foswiki ();
 use Foswiki::Func ();
 
 our $VERSION = '$Rev: 1206 $';
-our $RELEASE = '1.6.0.1-/jidQrcaozxnxTDSHEh3qA';
+our $RELEASE = '1.6.0.2-/jidQrcaozxnxTDSHEh3qA';
 our $SHORTDESCRIPTION = 'Automatically open links to !WebDAV resources in local applications';
 our $NO_PREFS_IN_TOPIC = 1;
 
@@ -51,6 +51,7 @@ STUFF
         # Create the plugin so we get the JS added to the header of
         # whatever page we are viewing.
         if ($usejqp) {
+            Foswiki::Plugins::JQueryPlugin::createPlugin('cookie');
             Foswiki::Plugins::JQueryPlugin::createPlugin('webdavlink');
         } else {
 	    # ASSUME THIS IS TWIKI!! Don't rely on the JQueryPlugin

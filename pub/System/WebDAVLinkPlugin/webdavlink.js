@@ -135,7 +135,8 @@
 	// the spec.
 	urls = new RegExp("^(" + urls + ")");
 
-        $('a:not(.webdav)').livequery(function(i) {
+//        $('a:not(.webdav)').livequery(function(i) {
+        $('a.webdav').livequery(function(i) {
 	    var $this = $(this);
 	    if (urls.test(this.href)) {
 		if ( !webdavEnabled ) {
