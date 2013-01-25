@@ -58,7 +58,62 @@
 	}
     });
 
+    $.fn.extend({
+	set_cookie: function( value ) {
+	    $.cookie( "modac-use-webdav", value, { path: "/" } );
+	}
+    });
+
+    $.fn.extend({
+	set_webdav: function( isEnabled ) {
+	    if ( isEnabled ) {
+		$('#webdav-enable-text').hide();
+		$('#webdav-disable-text').show();
+
+		$('#webdav-folder').show();
+		$('a.webdav-entry').show();
+	    } else {
+		$('#webdav-enable-text').show();
+		$('#webdav-disable-text').hide();
+
+		$('#webdav-folder').hide();
+		$('a.webdav-entry').hide();
+	    }
+	    var value = isEnabled ? '1' : '0';
+	    $(this).set_cookie( value );
+	}
+    });
+
     $(document).ready(function() {
+	if ( $.cookie( "modac-use-webdav" ) == undefined ) {
+	    $(this).set_cookie( "0" );
+	}
+
+	var webdavEnabled = $.cookie( "modac-use-webdav" ) == "1";
+	$(this).set_webdav( webdavEnabled );
+
+	$('#webdav-link').click( function( e ) {
+	    var webdavEnabled = $.cookie( "modac-use-webdav" ) == "1";
+
+	    if ( !webdavEnabled ) {
+		var ok_text = $("meta[name='WEBDAVLINK_OK_TEXT']").attr( "content" );
+		var cancel_text = $("meta[name='WEBDAVLINK_CANCEL_TEXT']").attr( "content" );
+		var dialog = $('#webdav-dialog').dialog( {
+		    modal: true, 
+		    closeOnEscape: true,
+		    buttons: [ 
+				{ text: ok_text, click: function() { $(this).set_webdav( true ); $(this).dialog( 'close' ); } },
+				{ text: cancel_text, click: function() { $(this).dialog( 'close' ); } }
+			     ]
+		} );
+		dialog.dialog( 'open' );
+	    } else {
+		$(this).set_webdav( false );
+	    }
+
+	    return e.preventDefault ? e.preventDefault() : false;
+	});
+
 	var urls;
 	$("meta[name='WEBDAVLINK_URLS']").each(
 	    function () { urls = unescape(this.content); });
@@ -79,11 +134,13 @@
 	// Add an onclick handler to all anchor tags that match
 	// the spec.
 	urls = new RegExp("^(" + urls + ")");
+
         $('a:not(.webdav)').livequery(function(i) {
 	    var $this = $(this);
 	    if (urls.test(this.href)) {
-                $this.addClass("webdav jqTooltip").attr(
-		    "title", "Edit in native application");
+		if ( !webdavEnabled ) {
+		    $this.hide();
+		}
                 $this.click(function(e) {
 		    return $this.webdav_open(e);
                 });

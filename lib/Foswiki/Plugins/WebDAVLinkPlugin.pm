@@ -38,10 +38,15 @@ sub initPlugin {
         my $ms_apps = Foswiki::urlEncode(JSON::to_json(
             $Foswiki::cfg{Plugins}{WebDAVLinkPlugin}{MSApps} || ''));
 
+	my $ok_text = "OK";
+	my $cancel_text = "Cancel";
+
        # utf8::downgrade($zone) if utf8::is_utf8($zone); # see Item9130
         Foswiki::Func::addToHEAD('WEBDAVLINKPLUGIN', <<STUFF );
 <meta name="WEBDAVLINK_URLS" content="$webdav_urls" />
 <meta name="WEBDAVLINK_MSAPPS" content="$ms_apps" />
+<meta name="WEBDAVLINK_OK_TEXT" content="%MAKETEXT{$ok_text}%" />
+<meta name="WEBDAVLINK_CANCEL_TEXT" content="%MAKETEXT{$cancel_text}%" />
 STUFF
         # Create the plugin so we get the JS added to the header of
         # whatever page we are viewing.
