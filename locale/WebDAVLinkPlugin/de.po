@@ -1,0 +1,45 @@
+# WebDAVLinkPlugin translation for Deutsch
+# Translators:
+# ModellAachen
+msgid ""
+msgstr ""
+"Project-Id-Version: Foswiki $Id\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: 2012-10-11 11:31+0200\n"
+"Last-Translator: Modell Aachen\n"
+"Language-Team: Foswiki German Translation Team <none>\n"
+"Language: de\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Pootle 2.0.5\n"
+
+#: templates/attachtables.webdav.tmpl
+msgid "Open as folder"
+msgstr "Als Ordner öffnen"
+
+#: templates/attachtables.webdav.tmpl
+msgid "Editing:"
+msgstr "Direktes Bearbeiten"
+
+#: templates/attachtables.webdav.tmpl
+msgid "enabled"
+msgstr "ausschalten"
+
+#: templates/attachtables.webdav.tmpl
+msgid "disabled"
+msgstr "einschalten"
+
+#: templates/attachtables.webdav.tmpl
+msgid "Warning"
+msgstr "Achtung"
+
+#: templates/attachtables.webdav.tmpl
+msgid "TBD Text"
+msgstr "TBD: Sinnvolle Warnung"
+
+#: templates/attachtables.webdav.tmpl
+msgid "Edit attachment"
+msgstr "Anhang bearbeiten"
