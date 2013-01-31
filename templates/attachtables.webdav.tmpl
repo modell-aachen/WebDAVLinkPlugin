@@ -29,13 +29,13 @@
 %ENDTWISTY%
 <literal>
   <!--[if IE]>
+  <![endif]-->
   <style type="text/css">
     a#webdav-link {
       float: right;
     }
 
-    a.webfolder {
-      behavior: url(#default#AnchorClick);
+    a.webdav-entry {
     }
 
     div.webdav-bottom-outer {
@@ -45,13 +45,20 @@
     div.webdav-bottom-inner {
       float: left;
     }
+
+    span#webdav-folder {
+      color: #0066CC;
+      cursor: hand;
+      cursor: pointer;
+      behavior: url('#default#httpFolder');
+    }
   </style>
 
   <div class="webdav-bottom-outer">
     <div class="webdav-bottom-inner">
-      <a id="webdav-folder" class="webfolder" href="%WEBDAVFOLDERURL%/%WEB%/%TOPIC%_files/" folder="%WEBDAVFOLDERURL%/%WEB%/%TOPIC%_files/" target="_new">
+      <span id="webdav-folder" onclick="this.navigateFrame( '%WEBDAVFOLDERURL%/%WEB%/%TOPIC%', '_blank' );">
         <strong>%MAKETEXT{"Open as folder"}%</strong>
-      </a>
+      </span>
     </div>
     <a id="webdav-link" href="">
       <strong>%MAKETEXT{"Editing:"}%</strong> 
@@ -63,7 +70,10 @@
   <div id="webdav-dialog" class="jqUIDialog" title="%MAKETEXT{"Warning"}%" style="display:none;">
     %MAKETEXT{"TBD Text"}%
   </div>
-  <![endif]-->
+
+
+
+
 </div>
 </literal>
 %TMPL:P{ATTACH:files:footer:script}%
@@ -82,4 +92,4 @@
 
 %{ A basic row definition, for attachment table and attach screen }%
 %{ Use %A_URL% instead of %PUBURLPATH%/%WEB%/%TOPIC%/%A_FILE% to get a viewfile link }%
-%TMPL:DEF{ATTACH:files:row(basic)}%| %A_ICON%<span class="foswikiHidden">%A_EXT%</span> | <a href="%ATTACHURLPATH%/%ENCODE{%A_FILE%}%"><noautolink>%A_FILE%</noautolink></a> | %IF{"$WORKFLOWEDITPERM" then="<a class='webdav-entry' href='%WEBDAVFOLDERURL%/%WEB%/%TOPIC%_files/%ENCODE{%A_FILE%}%' title='%MAKETEXT{"Edit attachment"}%' rel='follow'><img src='%PUBURL%/System/WebDAVLinkPlugin/icon_edit.png' border='0' alt='%MAKETEXT{"Edit attachment"}%' style='border:none;' /></a> &nbsp; <a href='$percentSCRIPTURLPATH{$quotattach$quot}$percent/$percentWEB$percent/$percentTOPIC$percent?filename=%ENCODE{"%A_FILE%"}%;revInfo=1' title='%MAKETEXT{"Update attachment"}%' rel='follow'><img src='%PUBURL%/System/ModacSkinTheme/ModacSkinLogos/icon_refresh.jpg' border='0' alt='%MAKETEXT{"Update attachment"}%' style='border:none;' /></a> &nbsp; <a href='%SCRIPTURLPATH{"rename"}%/%WEB%/%TOPIC%?template=moveattachment&attachment=%ENCODE{"%A_FILE%"}%' title='%MAKETEXT{"Move attachment"}%' rel='nofollow'><img src='%PUBURL%/System/ModacSkinTheme/ModacSkinLogos/icon_move.jpg' border='0' alt='%MAKETEXT{"Move attachment"}%' style='border:none;' /></a> &nbsp; <a href='%SCRIPTURLPATH{"rename"}%/%WEB%/%TOPIC%?newweb=%TRASHWEB%;newtopic=TrashAttachment;template=renameattachmentdelete;attachment=%ENCODE{"%A_FILE%"}%' title='%MAKETEXT{"Delete attachment"}%' rel='nofollow'><img src='%PUBURL%/System/ModacSkinTheme/ModacSkinLogos/icon_delete.jpg' border='0' alt='%MAKETEXT{"Delete attachment"}%' style='border:none;' /></a>"}% |  %A_SIZE%|<span class="foswikiNoBreak">%A_DATE%</span> |%A_USER%  |%A_COMMENT%  |%TMPL:END%
+%TMPL:DEF{ATTACH:files:row(basic)}%| %A_ICON%<span class="foswikiHidden">%A_EXT%</span> | <a href="%ATTACHURLPATH%/%ENCODE{%A_FILE%}%"><noautolink>%A_FILE%</noautolink></a> | %IF{"$WORKFLOWEDITPERM" then="<a class='webdav-entry' href='%WEBDAVFOLDERURL%/%WEB%/%TOPIC%/%ENCODE{%A_FILE%}%' title='%MAKETEXT{"Edit attachment"}%' rel='follow'><img src='%PUBURL%/System/WebDAVLinkPlugin/icon_edit.png' border='0' alt='%MAKETEXT{"Edit attachment"}%' style='border:none;' /></a> &nbsp; <a href='$percentSCRIPTURLPATH{$quotattach$quot}$percent/$percentWEB$percent/$percentTOPIC$percent?filename=%ENCODE{"%A_FILE%"}%;revInfo=1' title='%MAKETEXT{"Update attachment"}%' rel='follow'><img src='%PUBURL%/System/ModacSkinTheme/ModacSkinLogos/icon_refresh.jpg' border='0' alt='%MAKETEXT{"Update attachment"}%' style='border:none;' /></a> &nbsp; <a href='%SCRIPTURLPATH{"rename"}%/%WEB%/%TOPIC%?template=moveattachment&attachment=%ENCODE{"%A_FILE%"}%' title='%MAKETEXT{"Move attachment"}%' rel='nofollow'><img src='%PUBURL%/System/ModacSkinTheme/ModacSkinLogos/icon_move.jpg' border='0' alt='%MAKETEXT{"Move attachment"}%' style='border:none;' /></a> &nbsp; <a href='%SCRIPTURLPATH{"rename"}%/%WEB%/%TOPIC%?newweb=%TRASHWEB%;newtopic=TrashAttachment;template=renameattachmentdelete;attachment=%ENCODE{"%A_FILE%"}%' title='%MAKETEXT{"Delete attachment"}%' rel='nofollow'><img src='%PUBURL%/System/ModacSkinTheme/ModacSkinLogos/icon_delete.jpg' border='0' alt='%MAKETEXT{"Delete attachment"}%' style='border:none;' /></a>"}% |  %A_SIZE%|<span class="foswikiNoBreak">%A_DATE%</span> |%A_USER%  |%A_COMMENT%  |%TMPL:END%

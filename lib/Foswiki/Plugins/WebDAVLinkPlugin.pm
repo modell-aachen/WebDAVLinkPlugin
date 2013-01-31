@@ -11,7 +11,7 @@ use Foswiki ();
 use Foswiki::Func ();
 
 our $VERSION = '$Rev: 1206 $';
-our $RELEASE = '1.6.0.3-/jidQrcaozxnxTDSHEh3qA';
+our $RELEASE = '1.6.0.4-/jidQrcaozxnxTDSHEh3qA';
 our $SHORTDESCRIPTION = 'Automatically open links to !WebDAV resources in local applications';
 our $NO_PREFS_IN_TOPIC = 1;
 
