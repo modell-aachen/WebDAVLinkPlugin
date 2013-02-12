@@ -28,8 +28,6 @@
 %TMPL:DEF{ATTACH:files:footer}%
 %ENDTWISTY%
 <literal>
-  <!--[if IE]>
-  <![endif]-->
   <style type="text/css">
     a#webdav-link {
       float: right;
@@ -38,11 +36,11 @@
     a.webdav-entry {
     }
 
-    div.webdav-bottom-outer {
+    div#webdav-footer {
       margin: 5px;
     }
 
-    div.webdav-bottom-inner {
+    div#webdav-footer-inner {
       float: left;
     }
 
@@ -52,10 +50,15 @@
       cursor: pointer;
       behavior: url('#default#httpFolder');
     }
+
+    div#webdav-dialog {
+      display: none;
+    }
+
   </style>
 
-  <div class="webdav-bottom-outer">
-    <div class="webdav-bottom-inner">
+  <div id="webdav-footer">
+    <div id="webdav-footer-inner">
       <span id="webdav-folder" onclick="this.navigateFrame( '%WEBDAVFOLDERURL%/%WEB%/%TOPIC%', '_blank' );">
         <strong>%MAKETEXT{"Open as folder"}%</strong>
       </span>
@@ -70,9 +73,6 @@
   <div id="webdav-dialog" class="jqUIDialog" title="%MAKETEXT{"Warning"}%" style="display:none;">
     %MAKETEXT{"TBD Text"}%
   </div>
-
-
-
 
 </div>
 </literal>

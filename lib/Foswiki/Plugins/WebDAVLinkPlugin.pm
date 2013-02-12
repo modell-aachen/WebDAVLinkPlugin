@@ -11,7 +11,7 @@ use Foswiki ();
 use Foswiki::Func ();
 
 our $VERSION = '$Rev: 1206 $';
-our $RELEASE = '1.6.0.4-/jidQrcaozxnxTDSHEh3qA';
+our $RELEASE = '1.6.0.5-/jidQrcaozxnxTDSHEh3qA';
 our $SHORTDESCRIPTION = 'Automatically open links to !WebDAV resources in local applications';
 our $NO_PREFS_IN_TOPIC = 1;
 
@@ -35,6 +35,10 @@ sub initPlugin {
             $usejqp = 1;
         }
 
+	my $alwaysEnabled = $Foswiki::cfg{Plugins}{WebDAVLinkPlugin}{AlwaysEnabled} || 0;
+	my $webFolderLinkVisible = $Foswiki::cfg{Plugins}{WebDAVLinkPlugin}{WebFolderLinkVisible} || 0;
+	my $showWarning = $Foswiki::cfg{Plugins}{WebDAVLinkPlugin}{ShowWarning} || 0;
+
         my $ms_apps = Foswiki::urlEncode(JSON::to_json(
             $Foswiki::cfg{Plugins}{WebDAVLinkPlugin}{MSApps} || ''));
 
@@ -47,6 +51,9 @@ sub initPlugin {
 <meta name="WEBDAVLINK_MSAPPS" content="$ms_apps" />
 <meta name="WEBDAVLINK_OK_TEXT" content="%MAKETEXT{$ok_text}%" />
 <meta name="WEBDAVLINK_CANCEL_TEXT" content="%MAKETEXT{$cancel_text}%" />
+<meta name="WEBDAVLINK_ALWAYS_ENABLED" content="$alwaysEnabled" />
+<meta name="WEBDAVLINK_SHOW_FOLDER_LINK" content="$webFolderLinkVisible" />
+<meta name="WEBDAVLINK_SHOW_WARNING" content="$showWarning" />
 STUFF
         # Create the plugin so we get the JS added to the header of
         # whatever page we are viewing.

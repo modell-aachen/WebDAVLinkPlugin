@@ -9,6 +9,7 @@ pub/System/WebDAVLinkPlugin/webdavlink.js 0644 Compressed Javascript
 pub/System/WebDAVLinkPlugin/wikiringlogo20x20.png 0644 Graphic
 pub/System/WebDAVLinkPlugin/icon.png 0644 Firefox extension
 pub/System/WebDAVLinkPlugin/firefox/webdavlink.xpi 0644 Firefox extension
+pub/System/WebDAVLinkPlugin/firefox/msolink.xpi 0644 Firefox extension
 templates/attachtables.webdav.tmpl 0644 Foswiki template
 pub/System/WebDAVLinkPlugin/MacOS-Transmit-connect.png 0664
 pub/System/WebDAVLinkPlugin/MacOS-Transmit-filelist.png 0664
@@ -17,5 +18,6 @@ pub/System/WebDAVLinkPlugin/WebDAV-custom-level.png 0664
 pub/System/WebDAVLinkPlugin/WebDAV-security-settings.png 0664
 pub/System/WebDAVLinkPlugin/WebDAV-trusted-sites1.png 0664
 pub/System/WebDAVLinkPlugin/WebDAV-trusted-sites2.png 0664
+pub/System/WebDAVLinkPlugin/icon_empty.png 0664
 pub/System/WebDAVLinkPlugin/icon_edit.png 0664
 locale/WebDAVLinkPlugin/de.po 0644
