@@ -33,12 +33,12 @@ msgid "disabled"
 msgstr "einschalten"
 
 #: templates/attachtables.webdav.tmpl
-msgid "Warning"
+msgid "Attention"
 msgstr "Achtung"
 
 #: templates/attachtables.webdav.tmpl
-msgid "TBD Text"
-msgstr "TBD: Sinnvolle Warnung"
+msgid "All changes are commited to this server. Possibly you are going to overwrite a template.<br /><br />Do you want to proceed anyway?"
+msgstr "Alle Änderungen werden auf dem Server gespeichert. Möglicherweise überschreiben Sie eine Vorlage.<br /><br />Wollen Sie trotzdem fortfahren?"
 
 #: templates/attachtables.webdav.tmpl
 msgid "Edit attachment"
