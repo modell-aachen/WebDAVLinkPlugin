@@ -3,7 +3,7 @@
 	    // Invoked when an anchor tag that matches the requirements for
 	    // a webdav link is clicked. 
 
-        if ( typeof(ActiveXObject) != 'undefined' ) {
+        if ( typeof(ActiveXObject) != "undefined" ) {
 			// ActiveX available; try to invoke MSAPPS
 
 			// strip off url params
@@ -103,24 +103,45 @@
 		}
 		
 		if ( isEnabled ) {
-			$('#webdav-enable-text').hide();
-			$('#webdav-disable-text').show();
-			$('a.webdav-entry').show();
+			$( "#webdav-enable-text" ).hide();
+			$( "#webdav-disable-text" ).show();
+			$( ".webdav-entry" ).show();
 			var hideFolder = $(this).isFolderLinkVisible() == false;
 			hideFolder ? folderLink.hide() : folderLink.show();
 		} else {
-			$('#webdav-enable-text').show();
-			$('#webdav-disable-text').hide();
+			$( "#webdav-enable-text" ).show();
+			$( "#webdav-disable-text" ).hide();
 			$( "#webdav-folder" ).hide();
-			$('a.webdav-entry').hide();
+			$( ".webdav-entry" ).hide();
 		}
+	},
+	
+	isSupportedBrowser: function() {
+		var isIE = $.browser.msie;
+		var isFF = $.browser.mozilla;
+		var hasActiveX = typeof(ActiveXObject) != "undefined";
+		var isSupported = isFF || (isIE && hasActiveX);
+		return isSupported;
+	},
+	
+	hideAll: function() {
+		$( "#webdav-enable-text" ).hide();
+		$( "#webdav-disable-text" ).hide();
+		$( ".webdav-entry" ).hide();
+		$( "#webdav-folder" ).hide();
+		$( "#webdav-link" ).hide();
 	}
 });
 
     $( document ).ready( function() {
+		if ( !$(this).isSupportedBrowser() ) {
+			$(this).hideAll();
+			return;
+		}
+		
 		$(this).toggleWebDAVLinkVisibility( false );
 	
-		$('#webdav-link').click( function( e ) {
+		$( "#webdav-link" ).click( function( e ) {
 			var isAlwaysEnabled = $(this).isAlwaysEnabled();
 			var isEnabled = $(this).isEnabled();
 			var showWarning = $(this).isWarningEnabled();
@@ -128,17 +149,17 @@
 			var condition = !isAlwaysEnabled && !isEnabled && showWarning;
 			
 			if ( condition ) {
-				var ok_text = $("meta[name='WEBDAVLINK_OK_TEXT']").attr( "content" );
-				var cancel_text = $("meta[name='WEBDAVLINK_CANCEL_TEXT']").attr( "content" );
-				var dialog = $('#webdav-dialog').dialog( {
+				var ok_text = $( "meta[name='WEBDAVLINK_OK_TEXT']" ).attr( "content" );
+				var cancel_text = $( "meta[name='WEBDAVLINK_CANCEL_TEXT']" ).attr( "content" );
+				var dialog = $( "#webdav-dialog" ).dialog( {
 					modal: true, 
 					closeOnEscape: true,
 					buttons: [ 
-						{ text: ok_text, click: function() { $(this).toggleWebDAVLinkVisibility( true ); $(this).dialog( 'close' ); } },
-						{ text: cancel_text, click: function() { $(this).dialog( 'close' ); } }
+						{ text: ok_text, click: function() { $(this).toggleWebDAVLinkVisibility( true ); $(this).dialog( "close" ); } },
+						{ text: cancel_text, click: function() { $(this).dialog( "close" ); } }
 					]
 				} );
-				dialog.dialog( 'open' );
+				dialog.dialog( "open" );
 			} 
 			
 			if ( isEnabled || !showWarning ) {
@@ -153,9 +174,9 @@
 		
 		if ( urls == null || urls == '' ) {
 			// JQuery sometimes can't see the meta tag in IE
-			if ( typeof(foswiki) != 'undefined' ) {
+			if ( typeof(foswiki) != "undefined" ) {
 				urls = foswiki.getMetaTag( "WEBDAVLINK_URLS" );
-			} else if ( typeof(twiki) != 'undefined' ) {
+			} else if ( typeof(twiki) != "undefined" ) {
 				urls = twiki.getMetaTag( "WEBDAVLINK_URLS" );
 			}
 			
@@ -167,7 +188,7 @@
         
 		// Add an onclick handler to all anchor tags that match the spec.
 		urls = new RegExp( "^(" + urls + ")" );
-        $('a.webdav-entry').livequery( function(i) {
+        $( "a.webdav-entry" ).livequery( function(i) {
 			var $this = $(this);
 			if ( urls.test( this.href ) ) {			
 				var dot = this.href.lastIndexOf( "." );
@@ -186,11 +207,15 @@
 
 					if ( !hasHandler )
 					{
-						var img = $this.find('img');
-						var imgSrc = img.attr('src');
+						var img = $this.find( "img" );
+						var imgSrc = img.attr( "src" );
 						var index = imgSrc.lastIndexOf( "/" );
 						var newSrc = imgSrc.substring( 0, 1 + index ) + "icon_empty.png";
-						img.attr( 'src', newSrc );
+						img.attr( "src", newSrc );
+						
+						var parentClass = $this.attr( "class" );
+						img.attr( "class", parentClass );
+						
 						$this.replaceWith( img );
 					} else {
 						$this.click( function(e) { return $this.webdav_open(e); } );
@@ -198,5 +223,10 @@
 				}
 			}
         });
+		
+		var isEnabled = $(this).isAlwaysEnabled() ||  $(this).isEnabled();
+		if ( !isEnabled ) {
+			$( ".webdav-entry" ).hide();
+		}
 	});
 })(jQuery);
