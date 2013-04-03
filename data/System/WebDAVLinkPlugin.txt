@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="meyer" comment="reprev" date="1364992935" format="1.1" reprev="2" version="2"}%
+%META:TOPICINFO{author="meyer" comment="reprev" date="1364993971" format="1.1" reprev="2" version="2"}%
 ---+!! !WebDAVLinkPlugin
 
 <!--    * Set SHORTDESCRIPTION = Automatically open links to !WebDAV resources in local applications --> %SHORTDESCRIPTION%<img src="%PUBURLPATH%/%WEB%/%TOPIC%/icon.png" style="float:right" />
@@ -76,6 +76,7 @@ In the Internet Explorer menu bar:
 Most Firefox versions up to 5.0 have been tested.
 
 Install the firefox plugin by clicking this link: %PUBURL%/%WEB%/%TOPIC%/firefox/webdavlink.xpi
+
 Modac-Plugin: %PUBURL%/%WEB%/%TOPIC%/firefox/msolink.xpi
 
 Use the extension preferences to tell the extension what programto use to open Web<nop>DAV links.
