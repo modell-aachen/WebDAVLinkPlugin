@@ -11,12 +11,48 @@ use Foswiki ();
 use Foswiki::Func ();
 
 our $VERSION = '$Rev: 1206 $';
-our $RELEASE = '1.6.2.1';
+our $RELEASE = '1.6.2.2';
 our $SHORTDESCRIPTION = 'Automatically open links to !WebDAV resources in local applications';
 our $NO_PREFS_IN_TOPIC = 1;
 
 sub initPlugin {
     my ( $topic, $web, $user, $installWeb ) = @_;
+
+    my $session = $Foswiki::Plugins::SESSION;
+    my $request = $session->{request};
+    my $path =  Encode::decode_utf8( $request->uri() ); 
+
+#    unless ( $path =~ m/\/bin\/view\/.*/i ) {
+#        my $session = $Foswiki::Plugins::SESSION;
+#        my $curWeb = $session->{webName};
+#        my $curTopic = $session->{topicName};
+#        my $isValid = $curWeb && $curTopic;
+
+#        my $davurl = $Foswiki::cfg{Plugins}{WebDAVLinkPlugin}{URLs};
+#        my $isVHost = ( $davurl =~ m/^http[s]?:\/\/[a-zA-Z0-9_\-\.]+\/?$/i );
+#        my @fragments = split( '/', $path );
+#        my ( $i, $j );
+#        if ( $isVHost ) {
+#            $i = 1;
+#            $j = 2;
+#        } else {
+#            $i = 2;
+#            $j = 3;
+#        }
+
+#        my $web = $fragments[$i];
+#        my $topic = $fragments[$j];
+#        $topic =~ s/(.*)_files/$1/;
+
+#        my $isEqual = ( $curWeb eq $web && $curTopic eq $topic );
+#        unless( $isValid && $isEqual ) {
+##            $session->{webName} = $web;
+##            $session->{topicName} = $topic;
+## ToDo: verify
+#            Foswiki::Func::writeWarning( "setting web to $web" );
+#            Foswiki::Func::writeWarning( "setting topic to $topic" );
+#        }
+#    }
 
     Foswiki::Func::registerTagHandler('WEBDAVFOLDERURL', \&_WEBDAVFOLDERURL);
 
@@ -81,6 +117,16 @@ sub _WEBDAVFOLDERURL {
     $webdav_urls[0] =~ s/\/*$//;    #remove trailing slash
     return $webdav_urls[0];
 }
+
+sub afterUploadHandler {
+  my( $attrHashRef, $meta ) = @_;
+  my $session = $Foswiki::Plugins::SESSION;
+  my $web = $session->{webName};
+  my $topic = $session->{topicName};
+
+  Foswiki::Func::writeWarning( "web -> $web, topic -> $topic" );
+}
+
 
 1;
 __END__
