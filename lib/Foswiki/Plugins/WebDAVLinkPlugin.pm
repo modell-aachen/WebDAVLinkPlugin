@@ -5,84 +5,56 @@ package Foswiki::Plugins::WebDAVLinkPlugin;
 use strict;
 use Assert;
 
+use Error;
 use JSON ();
 
 use Foswiki ();
 use Foswiki::Func ();
 
+use Filesys::Virtual::Locks ();
+
 our $VERSION = '$Rev: 1206 $';
-our $RELEASE = '1.6.2.2';
+our $RELEASE = '1.6.2.3';
 our $SHORTDESCRIPTION = 'Automatically open links to !WebDAV resources in local applications';
 our $NO_PREFS_IN_TOPIC = 1;
 
 sub initPlugin {
-    my ( $topic, $web, $user, $installWeb ) = @_;
+  my ( $topic, $web, $user, $installWeb ) = @_;
 
-    my $session = $Foswiki::Plugins::SESSION;
-    my $request = $session->{request};
-    my $path =  Encode::decode_utf8( $request->uri() ); 
+  my $session = $Foswiki::Plugins::SESSION;
+  my $request = $session->{request};
+  my $path =  Encode::decode_utf8( $request->uri() ); 
 
-#    unless ( $path =~ m/\/bin\/view\/.*/i ) {
-#        my $session = $Foswiki::Plugins::SESSION;
-#        my $curWeb = $session->{webName};
-#        my $curTopic = $session->{topicName};
-#        my $isValid = $curWeb && $curTopic;
+  Foswiki::Func::registerTagHandler('WEBDAVFOLDERURL', \&_WEBDAVFOLDERURL);
+  Foswiki::Func::registerTagHandler('WEBDAVICON', \&_WEBDAVICON);
 
-#        my $davurl = $Foswiki::cfg{Plugins}{WebDAVLinkPlugin}{URLs};
-#        my $isVHost = ( $davurl =~ m/^http[s]?:\/\/[a-zA-Z0-9_\-\.]+\/?$/i );
-#        my @fragments = split( '/', $path );
-#        my ( $i, $j );
-#        if ( $isVHost ) {
-#            $i = 1;
-#            $j = 2;
-#        } else {
-#            $i = 2;
-#            $j = 3;
-#        }
+  my $webdav_urls = $Foswiki::cfg{Plugins}{WebDAVLinkPlugin}{URLs};
+  if ( $webdav_urls ) {
+    $webdav_urls = Foswiki::urlEncode( $webdav_urls );
+    my $usejqp = 0;
 
-#        my $web = $fragments[$i];
-#        my $topic = $fragments[$j];
-#        $topic =~ s/(.*)_files/$1/;
+    if ( eval "use Foswiki::Plugins::JQueryPlugin; 1;" &&
+      defined &Foswiki::Plugins::JQueryPlugin::registerPlugin ) {
 
-#        my $isEqual = ( $curWeb eq $web && $curTopic eq $topic );
-#        unless( $isValid && $isEqual ) {
-##            $session->{webName} = $web;
-##            $session->{topicName} = $topic;
-## ToDo: verify
-#            Foswiki::Func::writeWarning( "setting web to $web" );
-#            Foswiki::Func::writeWarning( "setting topic to $topic" );
-#        }
-#    }
+        # Register our jQuery plugin
+        Foswiki::Plugins::JQueryPlugin::registerPlugin(
+          'webdavlink',
+          'Foswiki::Plugins::WebDAVLinkPlugin::JQueryPlugin');
+        $usejqp = 1;
+      }
 
-    Foswiki::Func::registerTagHandler('WEBDAVFOLDERURL', \&_WEBDAVFOLDERURL);
+      my $alwaysEnabled = $Foswiki::cfg{Plugins}{WebDAVLinkPlugin}{AlwaysEnabled} || 0;
+      my $webFolderLinkVisible = $Foswiki::cfg{Plugins}{WebDAVLinkPlugin}{WebFolderLinkVisible} || 0;
+      my $showWarning = $Foswiki::cfg{Plugins}{WebDAVLinkPlugin}{ShowWarning} || 0;
 
-    my $webdav_urls = $Foswiki::cfg{Plugins}{WebDAVLinkPlugin}{URLs};
-    if ($webdav_urls) {
-        $webdav_urls = Foswiki::urlEncode($webdav_urls);
-        my $usejqp = 0;
+      my $ms_apps = Foswiki::urlEncode(JSON::to_json(
+        $Foswiki::cfg{Plugins}{WebDAVLinkPlugin}{MSApps} || ''));
 
-        if (eval "use Foswiki::Plugins::JQueryPlugin; 1;" &&
-              defined &Foswiki::Plugins::JQueryPlugin::registerPlugin) {
+      my $ok_text = "OK";
+      my $cancel_text = "Cancel";
 
-            # Register our jQuery plugin
-            Foswiki::Plugins::JQueryPlugin::registerPlugin(
-                'webdavlink',
-                'Foswiki::Plugins::WebDAVLinkPlugin::JQueryPlugin');
-            $usejqp = 1;
-        }
-
-	my $alwaysEnabled = $Foswiki::cfg{Plugins}{WebDAVLinkPlugin}{AlwaysEnabled} || 0;
-	my $webFolderLinkVisible = $Foswiki::cfg{Plugins}{WebDAVLinkPlugin}{WebFolderLinkVisible} || 0;
-	my $showWarning = $Foswiki::cfg{Plugins}{WebDAVLinkPlugin}{ShowWarning} || 0;
-
-        my $ms_apps = Foswiki::urlEncode(JSON::to_json(
-            $Foswiki::cfg{Plugins}{WebDAVLinkPlugin}{MSApps} || ''));
-
-	my $ok_text = "OK";
-	my $cancel_text = "Cancel";
-
-       # utf8::downgrade($zone) if utf8::is_utf8($zone); # see Item9130
-        Foswiki::Func::addToHEAD('WEBDAVLINKPLUGIN', <<STUFF );
+      # utf8::downgrade($zone) if utf8::is_utf8($zone); # see Item9130
+      Foswiki::Func::addToHEAD('WEBDAVLINKPLUGIN', <<STUFF );
 <meta name="WEBDAVLINK_URLS" content="$webdav_urls" />
 <meta name="WEBDAVLINK_MSAPPS" content="$ms_apps" />
 <meta name="WEBDAVLINK_OK_TEXT" content="%MAKETEXT{$ok_text}%" />
@@ -91,42 +63,63 @@ sub initPlugin {
 <meta name="WEBDAVLINK_SHOW_FOLDER_LINK" content="$webFolderLinkVisible" />
 <meta name="WEBDAVLINK_SHOW_WARNING" content="$showWarning" />
 STUFF
-        # Create the plugin so we get the JS added to the header of
-        # whatever page we are viewing.
-        if ($usejqp) {
-            Foswiki::Plugins::JQueryPlugin::createPlugin('cookie');
+      # Create the plugin so we get the JS added to the header of
+      # whatever page we are viewing.
+      if ( $usejqp ) {
+        Foswiki::Plugins::JQueryPlugin::createPlugin('cookie');
             Foswiki::Plugins::JQueryPlugin::createPlugin('webdavlink');
-        } else {
-	    # ASSUME THIS IS TWIKI!! Don't rely on the JQueryPlugin
-            Foswiki::Func::addToHEAD(
-		'WEBDAVLINKPLUGIN_JS', <<STUFF, "JQUERYPLUGIN");
+      } else {
+        # ASSUME THIS IS TWIKI!! Don't rely on the JQueryPlugin
+        Foswiki::Func::addToHEAD(
+	  'WEBDAVLINKPLUGIN_JS', <<STUFF, "JQUERYPLUGIN");
 <script type="text/javascript" src="%PUBURLPATH%/%SYSTEMWEB%/WebDAVLinkPlugin/jquery-1.1.3.js"></script>
 <script type="text/javascript" src="%PUBURLPATH%/%SYSTEMWEB%/WebDAVLinkPlugin/jquery.livequery-1.0.3.js"></script>
 <script type="text/javascript" src="%PUBURLPATH%/%SYSTEMWEB%/WebDAVLinkPlugin/webdavlink_src.js"></script>
 STUFF
-        }
+      }
     } else {
-        die "{Plugins}{WebDAVLinkPlugin}{URLs} must be defined and non-empty";
-    }
-    return 1;
+      die "{Plugins}{WebDAVLinkPlugin}{URLs} must be defined and non-empty";
+  }
+
+  return 1;
 }
 
 sub _WEBDAVFOLDERURL {
-    my @webdav_urls = split(
-        /\|/, $Foswiki::cfg{Plugins}{WebDAVLinkPlugin}{URLs});
-    $webdav_urls[0] =~ s/\/*$//;    #remove trailing slash
-    return $webdav_urls[0];
+  my @webdav_urls = split(/\|/, $Foswiki::cfg{Plugins}{WebDAVLinkPlugin}{URLs} );
+  $webdav_urls[0] =~ s/\/*$//;    #remove trailing slash
+  return $webdav_urls[0];
 }
 
-sub afterUploadHandler {
-  my( $attrHashRef, $meta ) = @_;
-  my $session = $Foswiki::Plugins::SESSION;
-  my $web = $session->{webName};
-  my $topic = $session->{topicName};
+sub _WEBDAVICON {
+  my( $session, $params, $topic, $web, $topicObject ) = @_;
 
-  Foswiki::Func::writeWarning( "web -> $web, topic -> $topic" );
+  my $fileName = $params->{_DEFAULT};
+  my $db = _GETDB();
+  return "icon_edit.png" unless $fileName && $db;
+
+  my $davURL = _WEBDAVFOLDERURL;
+  my $path = "$davURL/$web/$topic" . "_files/$fileName";
+  $path =~ s/^((http[s]?):\/)?\/?([^:\/\s]+)((\/\w+)*\/)([\w\-\.]+[^#?\s]+)(.*)?(#[\w\-]+)?$/$4$6/;
+  my @locks = $db->getLocks( $path, 0 );
+
+  foreach my $lock (@locks) {
+    next unless $lock->{exclusive};
+    return "icon_locked.png" if $lock->{path} eq $path;
+  }
+
+  return "icon_edit.png";
 }
 
+sub _GETDB {
+  my $db;
+
+  eval {
+    my $path = Foswiki::Func::getWorkArea( 'FilesysVirtualPlugin' ) . '/lockdb';
+    $db = new Filesys::Virtual::Locks( $path );
+  };
+
+  return $db if $db;
+}
 
 1;
 __END__

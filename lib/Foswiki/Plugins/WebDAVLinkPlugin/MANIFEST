@@ -20,4 +20,5 @@ pub/System/WebDAVLinkPlugin/WebDAV-trusted-sites1.png 0664
 pub/System/WebDAVLinkPlugin/WebDAV-trusted-sites2.png 0664
 pub/System/WebDAVLinkPlugin/icon_empty.png 0664
 pub/System/WebDAVLinkPlugin/icon_edit.png 0664
+pub/System/WebDAVLinkPlugin/icon_locked.png 0664
 locale/WebDAVLinkPlugin/de.po 0644
