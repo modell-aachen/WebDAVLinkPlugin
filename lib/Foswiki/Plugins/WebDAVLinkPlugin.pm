@@ -13,8 +13,8 @@ use Foswiki::Func ();
 
 use Filesys::Virtual::Locks ();
 
-our $VERSION = '1.6.2.4';
-our $RELEASE = '1.6.2.4';
+our $VERSION = '1.6.2.5';
+our $RELEASE = '1.6.2.5';
 our $SHORTDESCRIPTION = 'Automatically open links to !WebDAV resources in local applications';
 our $NO_PREFS_IN_TOPIC = 1;
 
@@ -30,7 +30,7 @@ sub initPlugin {
 
   my $server = $Foswiki::cfg{DefaultUrlHost};
   my $webdav_location = $Foswiki::cfg{Plugins}{WebDAVLinkPlugin}{Location};
-  my $webdav_url = "$server/$webdav_location";
+  my $webdav_url = "$server$webdav_location";
   if ( $webdav_location && $server ) {
     $webdav_url = Foswiki::urlEncode( $webdav_url );
     my $usejqp = 0;
@@ -92,7 +92,7 @@ sub _WEBDAVFOLDERURL {
   #remove trailing slash
   $location =~ s/\/*$//;
   $server =~ s/\/*$//;
-  return "$server/$location;
+  return "$server$location";
 }
 
 sub _WEBDAVICON {

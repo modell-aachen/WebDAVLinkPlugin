@@ -169,28 +169,25 @@
 			return e.preventDefault ? e.preventDefault() : false;
 		});
 
-		var urls;
-		$("meta[name='WEBDAVLINK_URLS']").each( function () { urls = unescape( this.content ); });
-		
-		if ( urls == null || urls == '' ) {
-			// JQuery sometimes can't see the meta tag in IE
-			if ( typeof(foswiki) != "undefined" ) {
-				urls = foswiki.getMetaTag( "WEBDAVLINK_URLS" );
-			} else if ( typeof(twiki) != "undefined" ) {
-				urls = twiki.getMetaTag( "WEBDAVLINK_URLS" );
-			}
-			
-			if ( urls == null || urls == '' ) {
-				alert( "No WEBDAVLINK_URLS" );
-				return;
-			}
+		var url = unescape( $("meta[name='WEBDAVLINK_URL']").attr( "content" ) );
+		if (url == null || url == '') {
+		    // JQuery sometimes can't see the meta tag in IE
+		    if (typeof(foswiki) != 'undefined') {
+			url = foswiki.getMetaTag("WEBDAVLINK_URL");
+		    } else if (typeof(twiki) != 'undefined') {
+			url = twiki.getMetaTag("WEBDAVLINK_URL");
+		    }
+		    if (url == null || url == '') {
+			alert("No WEBDAVLINK_URL");
+			return;
+		    }
 		}
         
 		// Add an onclick handler to all anchor tags that match the spec.
-		urls = new RegExp( "^(" + urls + ")" );
-        $( "a.webdav-entry" ).livequery( function(i) {
+		url = new RegExp( "^(" + url + ")" );
+		$( "a.webdav-entry" ).livequery( function(i) {
 			var $this = $(this);
-			if ( urls.test( this.href ) ) {			
+			if ( url.test( this.href ) ) {			
 				var dot = this.href.lastIndexOf( "." );
 				if ( dot > 0 )
 				{
