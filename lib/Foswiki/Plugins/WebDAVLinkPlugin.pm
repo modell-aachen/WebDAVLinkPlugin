@@ -13,8 +13,8 @@ use Foswiki::Func ();
 
 use Filesys::Virtual::Locks ();
 
-our $VERSION = '$Rev: 1206 $';
-our $RELEASE = '1.6.2.3';
+our $VERSION = '1.6.2.4';
+our $RELEASE = '1.6.2.4';
 our $SHORTDESCRIPTION = 'Automatically open links to !WebDAV resources in local applications';
 our $NO_PREFS_IN_TOPIC = 1;
 
@@ -28,9 +28,11 @@ sub initPlugin {
   Foswiki::Func::registerTagHandler('WEBDAVFOLDERURL', \&_WEBDAVFOLDERURL);
   Foswiki::Func::registerTagHandler('WEBDAVICON', \&_WEBDAVICON);
 
-  my $webdav_urls = $Foswiki::cfg{Plugins}{WebDAVLinkPlugin}{URLs};
-  if ( $webdav_urls ) {
-    $webdav_urls = Foswiki::urlEncode( $webdav_urls );
+  my $server = $Foswiki::cfg{DefaultUrlHost};
+  my $webdav_location = $Foswiki::cfg{Plugins}{WebDAVLinkPlugin}{Location};
+  my $webdav_url = "$server/$webdav_location";
+  if ( $webdav_location && $server ) {
+    $webdav_url = Foswiki::urlEncode( $webdav_url );
     my $usejqp = 0;
 
     if ( eval "use Foswiki::Plugins::JQueryPlugin; 1;" &&
@@ -55,7 +57,7 @@ sub initPlugin {
 
       # utf8::downgrade($zone) if utf8::is_utf8($zone); # see Item9130
       Foswiki::Func::addToHEAD('WEBDAVLINKPLUGIN', <<STUFF );
-<meta name="WEBDAVLINK_URLS" content="$webdav_urls" />
+<meta name="WEBDAVLINK_URL" content="$webdav_url" />
 <meta name="WEBDAVLINK_MSAPPS" content="$ms_apps" />
 <meta name="WEBDAVLINK_OK_TEXT" content="%MAKETEXT{$ok_text}%" />
 <meta name="WEBDAVLINK_CANCEL_TEXT" content="%MAKETEXT{$cancel_text}%" />
@@ -78,16 +80,19 @@ STUFF
 STUFF
       }
     } else {
-      die "{Plugins}{WebDAVLinkPlugin}{URLs} must be defined and non-empty";
+      die "{Plugins}{WebDAVLinkPlugin}Location} must be defined and non-empty";
   }
 
   return 1;
 }
 
 sub _WEBDAVFOLDERURL {
-  my @webdav_urls = split(/\|/, $Foswiki::cfg{Plugins}{WebDAVLinkPlugin}{URLs} );
-  $webdav_urls[0] =~ s/\/*$//;    #remove trailing slash
-  return $webdav_urls[0];
+  my $server = $Foswiki::cfg{DefaultUrlHost};
+  my $location = $Foswiki::cfg{Plugins}{WebDAVLinkPlugin}{Location};
+  #remove trailing slash
+  $location =~ s/\/*$//;
+  $server =~ s/\/*$//;
+  return "$server/$location;
 }
 
 sub _WEBDAVICON {

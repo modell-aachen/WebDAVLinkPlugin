@@ -13,11 +13,9 @@ $Foswiki::cfg{Plugins}{WebDAVLinkPlugin}{WebFolderLinkVisible} = 0;
 # Turn on/off warning messages on edit actions
 $Foswiki::cfg{Plugins}{WebDAVLinkPlugin}{ShowWarning} = 0;
 
-# **STRING 120**
-# |-separated list of URL roots for webdav servers. The first entry in this
-# list will be used as the server in the "WebDAV" column in attachment tables
-# when the "webdav" skin is in use.
-$Foswiki::cfg{Plugins}{WebDAVLinkPlugin}{URLs} = "";
+# **STRING**
+# Location for which the webserver exports the WebDAV extension
+$Foswiki::cfg{Plugins}{WebDAVLinkPlugin}{Location} = "/dav";
 
 # **PERL**
 # Filename extensions that can be used with different
