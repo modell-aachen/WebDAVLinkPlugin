@@ -4,7 +4,6 @@ lib/Foswiki/Plugins/WebDAVLinkPlugin/Config.spec 0444 Configuration parameters
 lib/Foswiki/Plugins/WebDAVLinkPlugin/JQueryPlugin.pm 0444 The JQueryPlugin
 pub/System/WebDAVLinkPlugin/jquery-1.1.3.js 0644 For TWiki compatibility only
 pub/System/WebDAVLinkPlugin/jquery.livequery-1.0.3.js 0644 For TWiki compatibility only
-pub/System/WebDAVLinkPlugin/webdavlink_src.js 0644 Javascript
 pub/System/WebDAVLinkPlugin/webdavlink.js 0644 Compressed Javascript
 pub/System/WebDAVLinkPlugin/wikiringlogo20x20.png 0644 Graphic
 pub/System/WebDAVLinkPlugin/icon.png 0644 Firefox extension
