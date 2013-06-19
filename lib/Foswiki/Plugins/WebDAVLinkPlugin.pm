@@ -13,8 +13,8 @@ use Foswiki::Func ();
 
 use Filesys::Virtual::Locks ();
 
-our $VERSION = '1.6.2.6';
-our $RELEASE = '1.6.2.6';
+our $VERSION = '1.6.2.7';
+our $RELEASE = '1.6.2.7';
 our $SHORTDESCRIPTION = 'Automatically open links to !WebDAV resources in local applications';
 our $NO_PREFS_IN_TOPIC = 1;
 

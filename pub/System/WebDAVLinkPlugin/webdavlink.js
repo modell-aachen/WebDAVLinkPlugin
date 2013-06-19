@@ -168,6 +168,14 @@
 			
 			return e.preventDefault ? e.preventDefault() : false;
 		});
+		
+		$( "#webdav-folder" ).click( function( e ) {
+				var davurl = $( "meta[name='WEBDAVLINK_URL']" ).attr( "content" );
+				var web = foswiki.preferences.WEB;
+				var topic = foswiki.preferences.TOPIC;
+				var target = davurl + "/" + web + "/" + topic + "_files";
+				this.navigateFrame( target, '_blank' );
+		});
 
 		var url = unescape( $("meta[name='WEBDAVLINK_URL']").attr( "content" ) );
 		if (url == null || url == '') {
