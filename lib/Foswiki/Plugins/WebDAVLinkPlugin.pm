@@ -13,8 +13,8 @@ use Foswiki::Func ();
 
 use Filesys::Virtual::Locks ();
 
-our $VERSION = '1.6.2.8';
-our $RELEASE = '1.6.2.8';
+our $VERSION = '1.6.2.9';
+our $RELEASE = '1.6.2.9';
 our $SHORTDESCRIPTION = 'Automatically open links to !WebDAV resources in local applications';
 our $NO_PREFS_IN_TOPIC = 1;
 
@@ -23,12 +23,20 @@ sub initPlugin {
 
   my $session = $Foswiki::Plugins::SESSION;
   my $request = $session->{request};
-  my $path =  Encode::decode_utf8( $request->uri() ); 
+  my $path =  Encode::decode_utf8( $request->uri() );
 
   Foswiki::Func::registerTagHandler('WEBDAVFOLDERURL', \&_WEBDAVFOLDERURL);
   Foswiki::Func::registerTagHandler('WEBDAVICON', \&_WEBDAVICON);
 
-  my $server = $Foswiki::cfg{DefaultUrlHost};
+  # Fix VirtualHosting
+  my $server = $session->{urlHost}
+  $server = $Foswiki::cfg{DefaultUrlHost} unless $server;
+
+  # Fix WebDAV -> FQDN -> NetBIOS
+  if ( $server =~ m|(http[s]?://)([\w-_]+)\..+| ) {
+    $server = $1 . $2;
+  }
+
   my $webdav_location = $Foswiki::cfg{Plugins}{WebDAVLinkPlugin}{Location};
   my $webdav_url = "$server$webdav_location";
   if ( $webdav_location && $server ) {
@@ -144,6 +152,6 @@ support from the authors (available from webdav@c-dot.co.uk). By working
 with us you not only gain direct access to the support of some of the
 most experienced Foswiki developers working on the project, but you are
 also helping to make the further development of open-source Foswiki
-possible. 
+possible.
 
 Author: Crawford Currie http://c-dot.co.uk
