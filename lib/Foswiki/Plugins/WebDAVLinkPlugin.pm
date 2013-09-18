@@ -13,8 +13,8 @@ use Foswiki::Func ();
 
 use Filesys::Virtual::Locks ();
 
-our $VERSION = '1.6.2.10';
-our $RELEASE = '1.6.2.10';
+our $VERSION = '1.6.2.11';
+our $RELEASE = '1.6.2.11';
 our $SHORTDESCRIPTION = 'Automatically open links to !WebDAV resources in local applications';
 our $NO_PREFS_IN_TOPIC = 1;
 
@@ -28,9 +28,11 @@ sub initPlugin {
   Foswiki::Func::registerTagHandler('WEBDAVFOLDERURL', \&_WEBDAVFOLDERURL);
   Foswiki::Func::registerTagHandler('WEBDAVICON', \&_WEBDAVICON);
 
+  my $server = $Foswiki::cfg{DefaultUrlHost};
+
   # Fix VirtualHosting
-  my $server = $session->{urlHost};
-  $server = $Foswiki::cfg{DefaultUrlHost} unless $server;
+  #my $server = $session->{urlHost};
+  #$server = $Foswiki::cfg{DefaultUrlHost} unless $server;
 
   # Fix WebDAV -> FQDN -> NetBIOS
   if ( $server =~ m|(http[s]?://)([\w_-]+)\..+| ) {
