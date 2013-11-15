@@ -1,0 +1,133 @@
+%META:TOPICINFO{author="meyer" comment="reprev" date="1364993971" format="1.1" reprev="2" version="2"}%
+---+!! !WebDAVLinkPlugin
+
+<!--    * Set SHORTDESCRIPTION = Automatically open links to !WebDAV resources in local applications --> %SHORTDESCRIPTION%<img src="%PUBURLPATH%/%WEB%/%TOPIC%/icon.png" style="float:right" />
+
+%TOC%
+
+---++ Usage
+
+This plugin adds support that helps you edit files held in [[http://en.wikipedia.org/wiki/WebDAV][WebDAV]] resources using nativeapplications (such as Microsoft Word) when you click on a link in the browser.It is designed specifically for use with the WebDAVContrib, but isflexible enough to be used with any !WebDAV provider.
+
+The plugin supports the following standard file extensions for openingfiles in [[http://en.wikipedia.org/wiki/Microsoft_Office][Microsoft Office]] tools from [[http://en.wikipedia.org/wiki/Internet_Explorer][Internet Explorer]]:
+   * .doc, .docx, .docm, .dotm
+   * .xls, .xlsx, .xlsm, .xlt, .xltx, .xltm, .xlsb, .xlam
+   * .ppt, .pptx, .pptm, .pot, .potx, .potm, .ppam, .ppsx, .ppsm
+
+You don&apos;t have to do anything other than enable and configure the plugin. Itwill scan your topics for anchor links, and automatically redirect thoselinks that refer to the webdav servers you identify.
+
+Both Internet Explorer and Firefox require some client-side setupsteps.
+
+---++ Installation Instructions
+
+You do not need to install anything in the browser to use this extension. The following instructions are for the administrator who installs the extension on the server.
+
+Open configure, and open the "Extensions" section. Use "Find More Extensions" to get a list of available extensions. Select "Install".
+
+If you have any problems, or if the extension isn&apos;t available in =configure=, then you can still install manually from the command-line. See http://foswiki.org/Support/ManuallyInstallingExtensions for more help.
+
+---+++ Configuring the plugin
+
+You *must* run =configure= and give a value for {Plugins}{WebDAVLinkPlugin}{URLs} so the plugin knows where your !WebDAV servers are.
+
+The plugin will automatically detect links in your pages that refer to theURLs you specify in the plugin configuration.
+
+---++++ Adjust Attachment Tables for displaying !WebDAV-Links
+
+If the directories where you store Foswiki attachments on the server are accessible using !WebDAV, you can configure attachment tables with a control thatopens attachments using native applications. This plugin ships with a [[%SYSTEMWEB%.SkinTemplates][skin template]], =templates/attachtables.webdav.tmpl=, that customises some features of the default skins to include appropriate links to open attachments and folders. The template is enabled by adding =webdav= to the skin path (see %MAINWEB%.SitePreferences), for example:
+<verbatim>
+    * Set SKIN = webdav,pattern
+</verbatim>
+
+You will see a "WebDAV" column in attachment tables (and in Internet Explorer only, an "Open Web<nop>Folder" link on the right).
+
+The template is not guaranteed to work with other skins, but should provide sufficient inspiration for you to be able to customise them if necessary.
+
+Note: if you want to be able to open Web<nop>Folders from Firefox, you may find the "Open as Web<nop>Folder" Firefox extension to be of value (not included in this package).
+
+---+++ Configuring Internet Explorer
+
+In the Internet Explorer menu bar:
+   * Select Tools -&gt; Internet Options
+   * Select Security and select the "Trusted Sites" zone
+   * Click on "Sites"
+      * Deselect "Require server verification" unless this is an https: site
+      * In the dialog, add the webdav site e.g http://myserver.com
+      * Close the "Trusted Sites" dialog
+
+<img alt="WebDAV-trusted-sites1.png" src="%ATTACHURLPATH%/WebDAV-trusted-sites1.png" />
+
+<img alt="WebDAV-trusted-sites2.png" src="%ATTACHURLPATH%/WebDAV-trusted-sites2.png" />
+
+   * Select "Custom level"
+      * Scroll down to the "ActiveX controls and plug-ins" section
+      * Scroll down to "Initialise and script Active X controls not marked as safe for scripting"
+      * Select the "Prompt" radio button
+      * OK the "Security Settings - Trusted Sites Zone" dialog
+
+<img alt="WebDAV-custom-level.png" src="%ATTACHURLPATH%/WebDAV-custom-level.png" />
+
+<img alt="WebDAV-security-settings.png" src="%ATTACHURLPATH%/WebDAV-security-settings.png" />
+
+   * OK the "Internet Options" dialog
+
+---+++ Configuring Firefox
+
+Most Firefox versions up to 5.0 have been tested.
+
+Install the firefox plugin by clicking this link: %PUBURL%/%WEB%/%TOPIC%/firefox/webdavlink.xpi
+
+Modac-Plugin: %PUBURL%/%WEB%/%TOPIC%/firefox/msolink.xpi
+
+Use the extension preferences to tell the extension what programto use to open Web<nop>DAV links.
+
+---+++ Running Web<nop>DAV on on Mac OS X
+
+The native client of Mac OS X is a bit crippled, but with a decent Web<nop>DAV client it works very well. For example Transmit (http://www.panic.com/transmit/) or Interarchy (http://nolobe.com/interarchy/) will provide easy access to Web<nop>DAV store on Foswiki for users. Both clients allow secure Web<nop>DAV over https transfers. Its possible to connect to your Wiki like a network drive and make it available within your Finder. For example Transmit has a feature called "Transmit Disk" which enables mounting of Web<nop>DAV shares.
+
+You can mount Web<nop>DAV folders via this URL: %WEBDAVFOLDERURL%
+
+---++++ Connect to Web<nop>DAV via Transmit
+
+<img alt="WebDAV-trusted-sites1.png" src="%ATTACHURLPATH%/MacOS-Transmit-connect.png" />
+
+---++++ Browse and open Files
+
+<img alt="WebDAV-trusted-sites1.png" src="%ATTACHURLPATH%/MacOS-Transmit-filelist.png" />
+
+---++++ Mount Web<nop>DAV as Network Drive via Transmit
+
+<img alt="WebDAV-trusted-sites1.png" src="%ATTACHURLPATH%/MacOS-Transmit-mount.png" />
+
+---++ License
+
+This software is released under the GNU Public License, version 2. However it cost a lot in blood, sweat and tears to develop, and you are respectfully requested to purchase a support contract (available from http://kontextwork.de). By doing so you not only gain direct access to the support of the most experienced Foswiki developers working on the project, but you are also helping to make the further development of open-source Foswiki possible.
+
+---++ Info
+
+Another great Foswiki extension from the [[http://wikiring.com][<img alt="" src="%ATTACHURLPATH%/wikiringlogo20x20.png" /> *WikiRing* ]] - working together to improve your wiki experience!
+
+|  Author(s): | Crawford Currie http://c-dot.co.uk |
+|  Copyright: | © 2009 - %DATE{"$year"}% Crawford Currie http://c-dot.co.uk |
+|  License: | [[http://www.gnu.org/licenses/old-licenses/gpl-2.0.html][GPL2 (Gnu General Public License v2)]] |
+|  Release: | 1.6.0-%$TRACKINGCODE% |
+|  Version: | 1206 (2011-06-23) |
+|  Change History: | <!-- versions below in reverse order --> |
+|  1.6 | Doc tweaks, tested on FF 5.0 |
+|  1.5 | Corrected code to work for SSL links and without extra browser setup |
+|  1.4 | Added capability to open any matching link - Michael Daum |
+|  1.3 | documentation fixups - Sven Dowideit |
+|  1.2 | Tested for FF 3.6, added debug features |
+|  1.1 | Initial release |
+|  Dependencies: | <table border="1" class="foswikiTable"> <tbody> <tr> <th> Name</th> <th> Version</th> <th> Description</th> </tr> <tr> <td align="left"> Foswiki::Plugins::JQueryPlugin</td> <td align="left"> &gt;=0</td> <td align="left"> Required, JQuery environment</td> </tr> <tr> <td align="left"> JSON</td> <td align="left"> 0</td> <td align="left"> Javascript object notation module</td> </tr> </tbody> </table> |
+|  Home page: | http://foswiki.org/bin/view/Extensions/WebDAVLinkPlugin |
+|  Support: | http://foswiki.org/bin/view/Support/WebDAVLinkPlugin |
+<!-- Do _not_ attempt to edit this topic; it is auto-generated. -->
+
+%META:FILEATTACHMENT{name="MacOS-Transmit-connect.png" attachment="MacOS-Transmit-connect.png" attr="H" date="1281482498" version="1"}%
+%META:FILEATTACHMENT{name="MacOS-Transmit-filelist.png" attachment="MacOS-Transmit-filelist.png" attr="H" date="1281482498" version="1"}%
+%META:FILEATTACHMENT{name="MacOS-Transmit-mount.png" attachment="MacOS-Transmit-mount.png" attr="H" date="1281482498" version="1"}%
+%META:FILEATTACHMENT{name="WebDAV-custom-level.png" attachment="WebDAV-custom-level.png" attr="H" date="1281482498" version="1"}%
+%META:FILEATTACHMENT{name="WebDAV-security-settings.png" attachment="WebDAV-security-settings.png" attr="H" date="1281482498" version="1"}%
+%META:FILEATTACHMENT{name="WebDAV-trusted-sites1.png" attachment="WebDAV-trusted-sites1.png" attr="H" date="1281482498" version="1"}%
+%META:FILEATTACHMENT{name="WebDAV-trusted-sites2.png" attachment="WebDAV-trusted-sites2.png" attr="H" date="1281482498" version="1"}%

@@ -1,0 +1,2 @@
+Foswiki::Plugins::JQueryPlugin,>=0,perl,Required, JQuery environment
+JSON,0,cpan,Javascript object notation module
